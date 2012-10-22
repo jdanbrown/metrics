@@ -191,7 +191,7 @@ public class CsvReporter extends AbstractPollingReporter implements
 
     @Override
     public void processHistogram(MetricName name, Histogram histogram, Context context) throws IOException {
-        final PrintStream stream = context.getStream("# time,min,max,mean,median,stddev,95%,99%,99.9%");
+        final PrintStream stream = context.getStream("# time,min,max,mean,median,stddev,95%,99%,99.9%,sum");
         final Snapshot snapshot = histogram.getSnapshot();
         stream.append(new StringBuilder()
                               .append(histogram.min()).append(',')
@@ -201,7 +201,8 @@ public class CsvReporter extends AbstractPollingReporter implements
                               .append(histogram.stdDev()).append(',')
                               .append(snapshot.get95thPercentile()).append(',')
                               .append(snapshot.get99thPercentile()).append(',')
-                              .append(snapshot.get999thPercentile()).toString())
+                              .append(snapshot.get999thPercentile()).append(',')
+                              .append(histogram.sum()).toString())
                 .println();
         stream.println();
         stream.flush();
@@ -209,7 +210,7 @@ public class CsvReporter extends AbstractPollingReporter implements
 
     @Override
     public void processTimer(MetricName name, Timer timer, Context context) throws IOException {
-        final PrintStream stream = context.getStream("# time,min,max,mean,median,stddev,95%,99%,99.9%");
+        final PrintStream stream = context.getStream("# time,min,max,mean,median,stddev,95%,99%,99.9%,sum");
         final Snapshot snapshot = timer.getSnapshot();
         stream.append(new StringBuilder()
                               .append(timer.min()).append(',')
@@ -219,7 +220,8 @@ public class CsvReporter extends AbstractPollingReporter implements
                               .append(timer.stdDev()).append(',')
                               .append(snapshot.get95thPercentile()).append(',')
                               .append(snapshot.get99thPercentile()).append(',')
-                              .append(snapshot.get999thPercentile()).toString())
+                              .append(snapshot.get999thPercentile()).append(',')
+                              .append(timer.sum()).toString())
                 .println();
         stream.flush();
     }
